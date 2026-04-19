@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <canvas id="board" width="800" height="800"></canvas> 
+   <dialog id="cardDialog">
+    <form method="dialog" id="cardForm">
+        <label for="cardFront">Front</label>
+        <textarea id="cardFront" rows="3" autofocus></textarea>
+        <label for="cardBack">Back</label>
+        <textarea id="cardBack" rows="3"></textarea>
+        <menu>
+            <button value="cancel" formmethod="dialog">Cancel</button>
+            <button value="ok">Save</button>
+        </menu>
+    </form>
+   </dialog>
+</body>
+    <script>
+        const ctx = board.getContext("2d");
+
+        function getMousePos(canvas, evt) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            }
+        }
+
+        board.addEventListener("click", (evt) => {
+            const pos = getMousePos(board, evt);
+            drawDot(pos, 15);
+            cardFront.value = '';
+            cardBack.value = '';
+            cardDialog.showModal();
+            if (cardDialog.returnValue === "ok") {
+                drawDot(pos, 15);
+            }
+
+        })
+        board.addEventListener("close", (e) => {
+
+        });
+
+        function drawDot({x, y}, radius) {
+            ctx.fillStyle = "red";
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+    </script>
+</html>
